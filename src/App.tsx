@@ -692,7 +692,7 @@ ${contexte}
             )}
 
             <section className="text-center my-12">
-              <h3 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-red-600 to-purple-700 bg-clip-text text-transparent mb-4">
+              <h3 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-red-600 to-black-700 bg-clip-text text-transparent mb-4">
                 Choisissez votre domaine d'assistance
               </h3>
               <p className="text-xl text-gray-700 max-w-3xl mx-auto">
