@@ -314,7 +314,7 @@ function App() {
             <section className="relative bg-orange-300 text-black overflow-hidden mx-4 rounded-2xl shadow-lg z-10">
               <div className="relative h-20 flex items-center overflow-hidden">
                 <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-orange-400 z-20 shadow-md">
-                  <span className="text-2xl font-bold">NEWS FTP:</span>
+                  <span className="text-2xl font-bold">NEWS FPT:</span>
                 </div>
                 <div className="animate-marquee whitespace-nowrap flex items-center pl-44">
                   {[...infoItems, ...infoItems].map((info, index) => (
@@ -344,11 +344,11 @@ function App() {
             )}
 
             <section className="text-center my-16">
-              <h3 className="text-4xl font-bold bg-gradient-to-r from-orange-600 via-red-600 to-purple-700 bg-clip-text text-transparent mb-4">
+              <h3 className="text-4xl font-bold bg-gradient-to-r from-green-600 via-red-600 to-purple-700 bg-clip-text text-transparent mb-4">
                 Choisissez votre domaine d&apos;assistance
               </h3>
               <p className="text-xl text-gray-700 max-w-3xl mx-auto">
-                Sélectionnez le service qui correspond à vos besoins. Nos assistants IA spécialisés vous aideront.
+                Nos assistants IA spécialisés vous aideront.
               </p>
             </section>
 

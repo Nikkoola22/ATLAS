@@ -7,5 +7,5 @@ export default defineConfig({
   optimizeDeps: {
     exclude: ['lucide-react'],
   },
-  base: '/gruuuu/', // ← AJOUTE CETTE LIGNE
+  base: '/ATLAS/', // ← AJOUTE CETTE LIGNE
 });
