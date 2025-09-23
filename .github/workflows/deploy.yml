@@ -3,7 +3,7 @@ name: Deploy Vite App to GitHub Pages
 on:
   push:
     branches:
-      - master   # ou main selon ton repo
+      - master  # ou main selon ton repo
 
 jobs:
   build-and-deploy:
@@ -22,19 +22,19 @@ jobs:
 
       # 3️⃣ Installer les dépendances
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       # 4️⃣ Build du projet
-      - name: Build project for GitHub Pages
+      - name: Build project
         run: |
-          export GITHUB_PAGES=true    # active base '/ATLAS/' dans vite.config.ts
+          export GITHUB_PAGES=true   # active base '/ATLAS/' dans vite.config.ts
           npm run build
 
       # 5️⃣ Déployer sur GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.atlas }}  # NOM du secret contenant ton PAT
+          github_token: ${{ secrets.atlas }}   # NOM exact du secret PAT
           publish_dir: ./dist
-          force_orphan: true                  # réinitialise la branche gh-pages proprement
-             # créé une branche propre si nécessaire
+          force_orphan: true                    # branche gh-pages propre
+          commit_message: "Deploy via GitHub Actions"
