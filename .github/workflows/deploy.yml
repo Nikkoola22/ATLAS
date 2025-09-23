@@ -1,33 +1,39 @@
-name: Deploy Vite app to GitHub Pages
+name: Deploy Vite App to GitHub Pages
 
 on:
   push:
     branches:
-      - master  # ou main
+      - master   # ou main selon ton repo
 
 jobs:
   build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Récupérer le repo
       - name: Checkout repository
         uses: actions/checkout@v4
 
+      # 2️⃣ Installer Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
 
+      # 3️⃣ Installer les dépendances
       - name: Install dependencies
         run: npm install
 
-      - name: Build project for GitHub Pages
+      # 4️⃣ Build du projet
+      - name: Build project
         run: |
-          export GITHUB_PAGES=true
+          export GITHUB_PAGES=true    # active base '/ATLAS/' pour Vite
           npm run build
 
+      # 5️⃣ Déployer sur GitHub Pages
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
-          github_token: ${{ secrets.atlas }}
+          github_token: ${{ secrets.atlas }}  # NOM du secret qui contient ton PAT
           publish_dir: ./dist
+          force_orphan: true                  # force une branche gh-pages propre
