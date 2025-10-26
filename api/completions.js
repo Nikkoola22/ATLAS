@@ -16,6 +16,17 @@ export default async function handler(req, res) {
 
   console.log('📝 Requête reçue:', JSON.stringify(req.body, null, 2));
   
+  // Vérifier que la clé API existe
+  if (!process.env.PERPLEXITY_API_KEY) {
+    console.error('❌ PERPLEXITY_API_KEY n\'est pas définie');
+    return res.status(500).json({ 
+      error: "Configuration manquante", 
+      details: "La clé API Perplexity n'est pas configurée dans Vercel. Veuillez ajouter PERPLEXITY_API_KEY dans les variables d'environnement." 
+    });
+  }
+  
+  console.log('🔑 Clé API trouvée:', process.env.PERPLEXITY_API_KEY.substring(0, 10) + '...');
+  
   try {
     const fetch = (await import('node-fetch')).default;
     
