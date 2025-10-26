@@ -14,6 +14,9 @@ import AdminPanel from "./components/AdminPanel.tsx"
 import CalculateurCIA from "./components/CalculateurCIA.tsx"
 
 
+// --- CONFIGURATION BASE URL POUR GITHUB PAGES ---
+const BASE_URL = import.meta.env.BASE_URL
+
 // --- CONFIGURATION API PERPLEXITY ---
 const BACKEND_API_URL = "http://localhost:3001/api/completions"
 
@@ -275,6 +278,13 @@ function App() {
       try {
         setRssLoading(true)
         
+        // Sur GitHub Pages, utiliser les données par défaut
+        if (BASE_URL !== '/') {
+          setRssItems(franceInfoRss)
+          setRssLoading(false)
+          return
+        }
+        
         // Utiliser le proxy Vite qui redirige vers le serveur Express
         const response = await fetch('/api/rss')
         
@@ -508,14 +518,14 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
       {/* Background image with transparency */}
       <div
         className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0"
-        style={{ backgroundImage: `url('/unnamed.jpg')`, opacity: 0.3 }}
+        style={{ backgroundImage: `url('${BASE_URL}unnamed.jpg')`, opacity: 0.3 }}
       ></div>
 
       {/* Subtle overlay for better text readability */}
       <div className="fixed inset-0 bg-black/20 z-0"></div>
 
       {/* HEADER PROFESSIONNEL */}
-      <header className="relative bg-gradient-to-r from-slate-900/70 via-purple-900/70 to-slate-900/70 backdrop-blur-md shadow-lg border-b border-purple-500/20 z-10 bg-cover bg-center" style={{ backgroundImage: `url('/mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
+      <header className="relative bg-gradient-to-r from-slate-900/70 via-purple-900/70 to-slate-900/70 backdrop-blur-md shadow-lg border-b border-purple-500/20 z-10 bg-cover bg-center" style={{ backgroundImage: `url('${BASE_URL}mairie.jpeg')`, backgroundBlendMode: 'overlay' }}>
         <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 via-purple-900/80 to-slate-900/80 z-0"></div>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 relative z-10">
           <div className="flex items-center justify-between gap-8">
@@ -524,7 +534,7 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
               <div className="relative">
                 <div className="absolute inset-0 bg-gradient-to-br from-purple-400/20 to-pink-400/20 rounded-lg blur-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                 <img
-                  src="/logo-cfdt.jpg"
+                  src={`${BASE_URL}logo-cfdt.jpg`}
                   alt="Logo CFDT"
                   className="w-32 h-32 object-contain relative transition-transform duration-300 group-hover:scale-105"
                 />
@@ -956,7 +966,7 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
               rgba(88, 28, 135, 0.85), 
               rgba(15, 23, 42, 0.85)
             ),
-            url('/mairie.jpeg')
+            url('${BASE_URL}mairie.jpeg')
           `,
           backgroundPosition: 'center bottom',
           backgroundSize: 'cover',
