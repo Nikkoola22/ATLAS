@@ -18,7 +18,9 @@ import CalculateurCIA from "./components/CalculateurCIA.tsx"
 const BASE_URL = import.meta.env.BASE_URL
 
 // --- CONFIGURATION API PERPLEXITY ---
-const BACKEND_API_URL = "http://localhost:3001/api/completions"
+const BACKEND_API_URL = import.meta.env.DEV 
+  ? "http://localhost:3001/api/completions" 
+  : "/api/completions"
 
 // --- RSS ITEM TYPE ---
 interface RssItem {
@@ -285,8 +287,11 @@ function App() {
           return
         }
         
-        // Utiliser le proxy Vite qui redirige vers le serveur Express
-        const response = await fetch('/api/rss')
+        // Construire l'URL de l'API selon l'environnement
+        const apiUrl = import.meta.env.DEV && BASE_URL === '/' 
+          ? '/api/rss' 
+          : `${window.location.origin}${BASE_URL}api/rss`
+        const response = await fetch(apiUrl)
         
         if (!response.ok) {
           console.warn(`Erreur backend: ${response.status}`)
