@@ -5,12 +5,13 @@
   "type": "module",
   "homepage": "https://nikkoola22.github.io/ATLAS",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently \"npm run server\" \"npm run dev:app\"",
+    "dev:app": "vite",
     "build": "vite build",
     "preview": "vite preview",
     "lint": "eslint .",
     "server": "node server.js",
-    "dev:full": "concurrently \"npm run server\" \"npm run dev\""
+    "dev:full": "concurrently \"npm run server\" \"npm run dev:app\""
   },
   "dependencies": {
     "cors": "^2.8.5",

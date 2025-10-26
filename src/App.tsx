@@ -59,9 +59,12 @@ const nettoyerChaine = (chaine: string): string => {
 // --- DICTIONNAIRE DE SYNONYMES ---
 const synonymes: Record<string, string[]> = {
   "forfait": ["forfait annuel", "jours forfait", "15 jours", "quota annuel"],
-  "teletravail": ["télétravail", "travail distance", "domicile", "remote"],
+  "teletravail": ["télétravail", "travail distance", "domicile", "remote", "travail à distance", "télécommute"],
   "conge": ["congés", "vacances", "absence", "cp", "autorisation absence"],
-  "formation": ["stage", "cours", "cpf", "qualification"],
+  "formation": ["stage", "cours", "cpf", "qualification", "apprentissage", "développement", "compétences"],
+  "cpf": ["cpf", "compte personnel formation", "compte personnel activité", "cpa"],
+  "vae": ["vae", "validation acquis", "validation expérience"],
+  "bilan": ["bilan de compétences", "bilan compétences", "évaluation"],
   "horaire": ["horaires", "temps travail", "planning", "heures"],
   "mariage": ["mariage", "pacs", "wedding", "union", "époux", "épouse"],
   "naissance": ["naissance", "accouchement", "enfant", "bébé", "nouveau né"],
@@ -111,25 +114,61 @@ const trouverContextePertinent = (question: string): string => {
 
     const motsClesChapitre = chapitreItem.mots_cles || []
     const motsClesArticles = (chapitreItem.articles || []).flatMap((article: any) => article.mots_cles || [])
-    const tousLesMotsCles = [...motsClesChapitre, ...motsClesArticles]
 
-    tousLesMotsCles.forEach((motCle: string) => {
+    // Traiter d'abord les mots-clés du chapitre (poids x3)
+    motsClesChapitre.forEach((motCle: string) => {
       const motCleNettoye = nettoyerChaine(motCle)
       if (!motCleNettoye) return
 
+      // Booster les mots-clés spécifiques au domaine
+      const isSpecificKeyword = ["formation", "cpf", "vae", "bilan compétences", 
+                                 "teletravail", "travail distance", "domicile",
+                                 "forfait annuel", "15 jours", "4 jours fixes"].includes(motCleNettoye)
+      const multiplier = isSpecificKeyword ? 3 : 1
+
       // Recherche exacte (priorité absolue)
       if (motsFinalAvecSynonymes.has(motCleNettoye)) {
-        score += 10
+        score += 10 * multiplier * 3
       } 
       // Recherche si mot clé contient un mot de la question
       else if (questionNettoyee.includes(motCleNettoye)) {
-        score += 5
+        score += 5 * multiplier * 3
       } 
       // Recherche partielle seulement si pas de match exact
       else {
         for (const motQuestion of motsFinalAvecSynonymes) {
           if (motCleNettoye.includes(motQuestion) || motQuestion.includes(motCleNettoye)) {
-            score += 2  // Score plus faible pour les matches partiels
+            score += 2 * multiplier * 3  // Score plus faible pour les matches partiels
+            break  // Compter une seule fois par motCle
+          }
+        }
+      }
+    })
+
+    // Traiter ensuite les mots-clés des articles (poids x2)
+    motsClesArticles.forEach((motCle: string) => {
+      const motCleNettoye = nettoyerChaine(motCle)
+      if (!motCleNettoye) return
+
+      // Booster les mots-clés spécifiques au domaine
+      const isSpecificKeyword = ["formation", "cpf", "vae", "bilan compétences", 
+                                 "teletravail", "travail distance", "domicile",
+                                 "forfait annuel", "15 jours", "4 jours fixes"].includes(motCleNettoye)
+      const multiplier = isSpecificKeyword ? 3 : 1
+
+      // Recherche exacte (priorité absolue)
+      if (motsFinalAvecSynonymes.has(motCleNettoye)) {
+        score += 10 * multiplier * 2
+      } 
+      // Recherche si mot clé contient un mot de la question
+      else if (questionNettoyee.includes(motCleNettoye)) {
+        score += 5 * multiplier * 2
+      } 
+      // Recherche partielle seulement si pas de match exact
+      else {
+        for (const motQuestion of motsFinalAvecSynonymes) {
+          if (motCleNettoye.includes(motQuestion) || motQuestion.includes(motCleNettoye)) {
+            score += 2 * multiplier * 2  // Score plus faible pour les matches partiels
             break  // Compter une seule fois par motCle
           }
         }
