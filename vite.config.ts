@@ -3,7 +3,7 @@ import react from '@vitejs/plugin-react';
 
 export default defineConfig({
   plugins: [react()],
-  base: process.env.GITHUB_PAGES ? '/ATLAS/' : '/',
+  base: process.env.GITHUB_PAGES ? '/new-unifed-/' : '/',
   resolve: {
     alias: {
       '@': '/src',
