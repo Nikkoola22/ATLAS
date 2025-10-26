@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { X, Settings, Users, FileText, Database, Plus, Edit3, Trash2, Save } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Settings, Users, FileText, Database, Plus, Edit3, Trash2, Save, LogOut } from 'lucide-react';
 import { infoItems as initialInfoItems } from '../data/info-data';
 
 interface InfoItem {
@@ -13,6 +13,23 @@ interface AdminPanelProps {
 }
 
 export default function AdminPanel({ onClose }: AdminPanelProps) {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    // Vérifier l'authentification au montage
+    const authStatus = localStorage.getItem('admin_authenticated');
+    if (authStatus === 'true') {
+      setIsAuthenticated(true);
+    } else {
+      setIsAuthenticated(false);
+    }
+  }, []);
+
+  const handleLogout = () => {
+    localStorage.removeItem('admin_authenticated');
+    localStorage.removeItem('admin_username');
+    onClose();
+  };
   const [activeTab, setActiveTab] = useState('settings');
   const [infoItems, setInfoItems] = useState<InfoItem[]>(initialInfoItems);
   const [editingId, setEditingId] = useState<number | null>(null);
@@ -31,14 +48,24 @@ export default function AdminPanel({ onClose }: AdminPanelProps) {
       <div className="bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 rounded-2xl shadow-2xl border border-purple-500/30 overflow-hidden max-w-4xl w-full max-h-[90vh] overflow-y-auto">
         {/* Header */}
         <div className="bg-gradient-to-r from-purple-900/80 via-blue-900/80 to-purple-900/80 backdrop-blur-md border-b border-purple-500/20 p-6 relative">
-          <button
-            onClick={onClose}
-            className="absolute top-4 right-4 text-purple-300 hover:text-white transition-colors p-2 hover:bg-purple-500/20 rounded-lg"
-          >
-            <X className="w-6 h-6" />
-          </button>
+          <div className="flex items-center justify-between">
+            <button
+              onClick={onClose}
+              className="text-purple-300 hover:text-white transition-colors p-2 hover:bg-purple-500/20 rounded-lg"
+            >
+              <X className="w-6 h-6" />
+            </button>
+            
+            <button
+              onClick={handleLogout}
+              className="flex items-center gap-2 px-4 py-2 bg-red-500/20 border border-red-500/30 text-red-300 rounded-lg hover:bg-red-500/30 transition-all"
+            >
+              <LogOut className="w-4 h-4" />
+              <span className="text-sm">Déconnexion</span>
+            </button>
+          </div>
           
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 mt-4">
             <Settings className="w-8 h-8 text-purple-400" />
             <div>
               <h3 className="text-2xl font-light text-white">Panneau d'Administration</h3>

@@ -11,6 +11,7 @@ import { infoItems } from "./data/info-data.ts"
 import { ifse1Data, getAllDirections, getIFSE2ByDirection, getDirectionFullName } from "./data/rifseep-data.ts"
 import { franceInfoRss } from "./data/rss-data.ts"
 import AdminPanel from "./components/AdminPanel.tsx"
+import AdminLogin from "./components/AdminLogin.tsx"
 import CalculateurCIA from "./components/CalculateurCIA.tsx"
 
 
@@ -263,6 +264,7 @@ function App() {
   const [selectedIFSE2, setSelectedIFSE2] = useState<Set<number>>(new Set())
   const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia'>('primes')
   const [showAdminPanel, setShowAdminPanel] = useState(false)
+  const [showAdminLogin, setShowAdminLogin] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const chatContainerRef = useRef<HTMLDivElement>(null)
@@ -1009,7 +1011,15 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
           {/* Bouton Admin */}
           <div className="mt-8 pt-8 border-t border-purple-500/20">
             <button
-              onClick={() => setShowAdminPanel(true)}
+              onClick={() => {
+                // Vérifier si déjà authentifié
+                const isAuth = localStorage.getItem('admin_authenticated') === 'true';
+                if (isAuth) {
+                  setShowAdminPanel(true);
+                } else {
+                  setShowAdminLogin(true);
+                }
+              }}
               className="px-4 py-2 bg-purple-600/50 border border-purple-500/50 text-purple-300 rounded-lg hover:bg-purple-600/70 transition-all duration-200 font-light text-xs"
             >
               Accès Administrateur
@@ -1017,6 +1027,17 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
           </div>
         </div>
       </footer>
+
+      {/* Admin Login Modal */}
+      {showAdminLogin && (
+        <AdminLogin 
+          onClose={() => setShowAdminLogin(false)} 
+          onSuccess={() => {
+            setShowAdminLogin(false);
+            setShowAdminPanel(true);
+          }}
+        />
+      )}
 
       {/* Admin Panel Modal */}
       {showAdminPanel && <AdminPanel onClose={() => setShowAdminPanel(false)} />}
