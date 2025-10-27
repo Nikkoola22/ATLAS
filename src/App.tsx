@@ -74,7 +74,7 @@ const synonymes: Record<string, string[]> = {
   "horaire": ["horaires", "temps travail", "planning", "heures"],
   "mariage": ["mariage", "pacs", "wedding", "union", "époux", "épouse"],
   "naissance": ["naissance", "accouchement", "enfant", "bébé", "nouveau né"],
-  "deuil": ["deuil", "décès", "enterrement", "obsèques", "funérailles"],
+  "deuil": ["deuil", "décès", "deces", "enterrement", "obsèques", "obseques", "funérailles", "funerailles", "perte", "mort", "mère", "père", "parent"],
   "rtt": ["RTT", "artt", "temps repo", "jours repos"],
   "astreinte": ["astreinte", "permanence", "garde", "nuit"],
   "maladie": ["maladie", "arrêt maladie", "CLM", "CLD"],

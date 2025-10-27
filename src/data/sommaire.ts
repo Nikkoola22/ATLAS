@@ -125,9 +125,11 @@ export const sommaire: SommaireStructure = {
       icone: "📅",
       mots_cles: [
         "autorisation absence", "absence autorisée", "fête religieuse", "garde enfant malade",
-        "proche aidant", "décès", "mariage", "PACS", "rentrée scolaire", "consultation médicale",
-        "deuil", "permis de conduire", "raison personnelle", "demande autorisation",
-        "absence autorisée", "motif", "justification"
+        "proche aidant", "décès", "deces", "mariage", "PACS", "rentrée scolaire", "consultation médicale",
+        "deuil", "obsèques", "obseques", "enterrement", "funérailles", "funerailles", "perte",
+        "perte parent", "mort", "mère", "père", "parents", "famille", "certificat décès",
+        "permis de conduire", "raison personnelle", "demande autorisation",
+        "absence autorisée", "motif", "justification", "5 jours", "3 jours"
       ],
       articles: [
         {
@@ -150,6 +152,14 @@ export const sommaire: SommaireStructure = {
           source: "temps",
           idContenu: 3,
           mots_cles: ["proche aidant", "AJPA", "pathologie", "fin de vie"]
+        },
+        {
+          titre: "Article 5 : En cas de décès d'un membre de la famille",
+          page: 35,
+          source: "temps",
+          idContenu: 3,
+          mots_cles: ["décès", "deces", "deuil", "mère", "père", "parents", "obsèques", "obseques", 
+                     "certificat décès", "perte", "mort", "5 jours", "3 jours", "famille", "conjoint"]
         },
         {
           titre: "Article 6 : Mariage ou PACS",
