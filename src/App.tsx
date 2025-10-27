@@ -568,7 +568,7 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
       {/* Bandeau NEWS FPT - Pleine largeur sous le header */}
       <section className="relative bg-gradient-to-r from-orange-500/60 via-red-500/60 to-pink-500/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-orange-400/30 z-10">
       <div className="relative h-16 flex items-center overflow-hidden">
-        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-600/80 to-red-600/80 backdrop-blur z-20 shadow-lg">
+        <div className="absolute left-0 top-0 h-full w-32 flex items-center justify-center bg-gradient-to-r from-orange-600 to-red-600 backdrop-blur z-20 shadow-lg">
           <span className="text-base font-light tracking-wide text-white">NEWS:</span>
         </div>
         <div className="animate-marquee whitespace-nowrap flex items-center pl-36">
@@ -936,7 +936,7 @@ Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références ex
       {/* --- BANDEAU RSS DÉFILANT --- */}
       <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 -mt-0">
         <div className="relative h-16 flex items-center overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700/80 to-blue-700/80 backdrop-blur z-20 shadow-lg">
+          <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700 to-blue-700 backdrop-blur z-20 shadow-lg">
             <div className="flex items-center gap-2">
               <Rss className="w-4 h-4 text-cyan-300 animate-pulse" />
               <span className="text-base font-light tracking-wide text-white">ACTU:</span>
