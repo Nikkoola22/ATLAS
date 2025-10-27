@@ -34,8 +34,12 @@ export default async function handler(req, res) {
       ...req.body,
       return_images: false,
       return_related_questions: false,
-      max_tokens: 1000,
-      temperature: 0.0
+      max_tokens: 2000,
+      temperature: 0.0,
+      search_recency_filter: "month",
+      return_citations: true,
+      search_domain_filter: ["ville-gennevilliers.fr", "cfdt.fr"],
+      pplx_model: "llama-3.1-sonar-large-32k-online"
     };
     
     console.log('🚀 Envoi vers Perplexity:', JSON.stringify(modifiedBody, null, 2));

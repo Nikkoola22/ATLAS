@@ -447,32 +447,39 @@ function App() {
   }
 
   const traiterQuestion = async (question: string) => {
-    // Passer les données correctement à la fonction de recherche
-    const contexteInterne = trouverContextePertinent(question)
+    // Charger TOUTES les données pour recherche sémantique complète
+    const toutLeContenu = `
+CHAPITRE 1 - LE TEMPS DE TRAVAIL :
+${(chapitres as Record<number, string>)[1] || ''}
+
+CHAPITRE 2 - LES CONGÉS :
+${(chapitres as Record<number, string>)[2] || ''}
+
+CHAPITRE 3 - AUTORISATIONS SPÉCIALES D'ABSENCE :
+${(chapitres as Record<number, string>)[3] || ''}
+
+CHAPITRE 4 - LES ABSENCES POUR MALADIES ET ACCIDENTS :
+${(chapitres as Record<number, string>)[4] || ''}
+
+CHAPITRE 5 - LE RÈGLEMENT FORMATION :
+${formation || ''}
+
+CHAPITRE 6 - LE PROTOCOLE TÉLÉTRAVAIL :
+${typeof teletravailData === 'string' ? teletravailData : JSON.stringify(teletravailData)}
+`
 
     const systemPrompt = `
-⚠️ RÈGLES CRITIQUES - VIOLATION INTERDITE ⚠️
+Tu es un assistant CFDT pour la Mairie de Gennevilliers.
 
-🚫 INTERDICTIONS ABSOLUES :
-- INTERDICTION TOTALE de faire des recherches web
-- INTERDICTION TOTALE d'utiliser tes connaissances générales  
-- INTERDICTION TOTALE de citer des articles de loi externes
-- INTERDICTION TOTALE de mentionner des chiffres non présents dans la documentation
-- INTERDICTION TOTALE de comparer avec d'autres secteurs (privé, public, etc.)
+RÈGLES :
+1. Réponds UNIQUEMENT en utilisant les documents ci-dessous
+2. Ne cherche pas sur internet
+3. Si l'info n'est pas dans les docs, dis : "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
+4. Sois précis sur les chiffres et délais mentionnés
+5. Réponds comme un collègue syndical bienveillant
 
-✅ OBLIGATIONS STRICTES :
-- Tu dois UNIQUEMENT analyser la documentation fournie ci-dessous
-- Tu dois répondre comme un collègue syndical de la mairie de Gennevilliers
-- Si l'information n'est pas dans la documentation, réponds UNIQUEMENT : "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64 pour plus de détails."
-- Tu dois te baser EXCLUSIVEMENT sur les données du dossier src/data
-
-🔒 DOCUMENTATION INTERNE UNIQUEMENT
-
---- DOCUMENTATION INTERNE DE LA MAIRIE DE GENNEVILLIERS ---
-${contexteInterne}
---- FIN DOCUMENTATION INTERNE ---
-
-Rappel : Tu ne dois JAMAIS mentionner des articles de loi ou des références externes. Si tu ne trouves pas l'information, ARRÊTE-TOI IMMÉDIATEMENT.
+DOCUMENTATION COMPLÈTE :
+${toutLeContenu}
     `
 
     const conversationHistory = chatState.messages.slice(1).map((msg) => ({
