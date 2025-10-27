@@ -82,9 +82,9 @@ export const sommaire: SommaireStructure = {
       idContenu: 2,
       icone: "🏖️",
       mots_cles: [
-        "congés annuels", "congé bonifié", "ARTT", "don de jours", "CET",
+        "congés annuels", "conges annuels", "congé bonifié", "ARTT", "don de jours", "CET",
         "congés naissance", "fractionnement", "jours fériés", "temps partiel", "report",
-        "RTT", "vacances"
+        "RTT", "vacances", "25 jours", "5 fois", "jours ouvrés", "nb jours", "nombre jours"
       ],
       articles: [
         {
@@ -92,7 +92,7 @@ export const sommaire: SommaireStructure = {
           page: 19,
           source: "temps",
           idContenu: 2,
-          mots_cles: ["jours ouvrés", "planning", "fractionnement", "report", "priorité"]
+          mots_cles: ["jours ouvrés", "planning", "fractionnement", "report", "priorité", "25 jours", "congés annuels", "droit congés", "combien jours"]
         },
         {
           titre: "Article 3 : Les jours d'A.R.T.T",
