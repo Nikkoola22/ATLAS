@@ -1,6 +1,5 @@
-import type React from "react"
-import { useState, useRef, useEffect } from "react"
-import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator } from "lucide-react"
+import React, { useState, useRef, useEffect, useMemo } from "react"
+import { Phone, Mail, MapPin, ArrowRight, Send, ArrowLeft, Search, Rss, Calculator, TrendingUp, DollarSign } from "lucide-react"
 
 // --- IMPORTATIONS DES DONNÉES ---
 import { sommaire } from "./data/sommaire.ts"
@@ -13,6 +12,8 @@ import { franceInfoRss } from "./data/rss-data.ts"
 import AdminPanel from "./components/AdminPanel.tsx"
 import AdminLogin from "./components/AdminLogin.tsx"
 import CalculateurCIA from "./components/CalculateurCIA.tsx"
+import CalculateurPrimes from "./components/CalculateurPrimes.tsx"
+import Calculateur13eme from "./components/Calculateur13eme.tsx"
 
 
 // --- CONFIGURATION BASE URL POUR GITHUB PAGES ---
@@ -29,6 +30,49 @@ interface RssItem {
   link: string
   pubDate: string
 }
+
+// --- COMPOSANT RSS BANDEAU (mémorisé pour éviter les re-renders) ---
+const RssBandeau = React.memo(({ rssItems, rssLoading }: { rssItems: RssItem[], rssLoading: boolean }) => {
+  // Mémoriser le contenu pour éviter que l'animation ne se réinitialise
+  const content = useMemo(() => {
+    if (rssItems.length === 0) {
+      return (
+        <span className="text-base mx-8 font-light text-slate-100">
+          {rssLoading ? "Chargement des articles..." : "Aucun article disponible"}
+        </span>
+      )
+    }
+    // Tripler les items pour un défilement continu
+    return [...rssItems, ...rssItems, ...rssItems].map((item, index) => (
+      <a
+        key={`rss-${index}-${item.link}`}
+        href={item.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-lg font-light mx-6 hover:text-cyan-300 transition-all duration-200 cursor-pointer hover:drop-shadow-lg text-white"
+      >
+        • {item.title}
+      </a>
+    ))
+  }, [rssItems, rssLoading])
+
+  return (
+    <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 -mt-0">
+      <div className="relative h-16 flex items-center overflow-hidden">
+        <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700 to-blue-700 backdrop-blur z-20 shadow-lg">
+          <div className="flex items-center gap-2">
+            <Rss className="w-4 h-4 text-cyan-300 animate-pulse" />
+            <span className="text-base font-light tracking-wide text-white">ACTU:</span>
+          </div>
+        </div>
+        <div className="animate-marquee-rss whitespace-nowrap flex items-center pl-44">
+          {content}
+        </div>
+      </div>
+    </section>
+  )
+})
+RssBandeau.displayName = 'RssBandeau'
 
 // --- TYPES ---
 interface ChatMessage {
@@ -264,7 +308,7 @@ function App() {
   const [selectedDirection, setSelectedDirection] = useState<string>("")
   const [calculatedPrime, setCalculatedPrime] = useState<{ annual: number; monthly: number }>({ annual: 0, monthly: 0 })
   const [selectedIFSE2, setSelectedIFSE2] = useState<Set<number>>(new Set())
-  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia'>('primes')
+  const [activeCalculator, setActiveCalculator] = useState<'primes' | 'cia' | '13eme' | null>(null)
   const [showAdminPanel, setShowAdminPanel] = useState(false)
   const [showAdminLogin, setShowAdminLogin] = useState(false)
   const messagesEndRef = useRef<HTMLDivElement>(null)
@@ -471,13 +515,22 @@ ${typeof teletravailData === 'string' ? teletravailData : JSON.stringify(teletra
     const systemPrompt = `
 Tu es un assistant CFDT pour la Mairie de Gennevilliers.
 
-RÈGLES :
+RÈGLES STRICTES :
 1. Réponds UNIQUEMENT en utilisant les documents ci-dessous
-2. Ne cherche pas sur internet
-3. Si l'info n'est pas dans les docs, dis : "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
-4. Sois précis sur les chiffres et délais mentionnés
-5. Réponds comme un collègue syndical bienveillant
-6. IMPORTANT : Ne mentionne JAMAIS [CHAPITRE X - ARTICLE Y] dans ta réponse. Réponds naturellement sans références techniques.
+2. Ne cherche JAMAIS sur internet, n'utilise JAMAIS tes connaissances externes
+3. Sois précis sur les chiffres et délais mentionnés dans les documents
+4. Réponds comme un collègue syndical bienveillant
+5. Ne mentionne JAMAIS [CHAPITRE X - ARTICLE Y] dans ta réponse. Réponds naturellement.
+
+⚠️ RÈGLE CRITIQUE - SI TU TROUVES L'INFO :
+- Donne directement la réponse, sans dire "Je ne trouve pas"
+- Cite les détails précis des documents
+
+⚠️ RÈGLE CRITIQUE - SI TU NE TROUVES PAS L'INFO :
+- Réponds UNIQUEMENT : "Je ne trouve pas cette information dans nos documents internes. Contactez la CFDT au 01 40 85 64 64."
+- ARRÊTE-TOI IMMÉDIATEMENT après cette phrase
+- N'ajoute AUCUNE information supplémentaire
+- Ne commence JAMAIS par "Je ne trouve pas" puis donne une réponse ensuite
 
 DOCUMENTATION COMPLÈTE :
 ${toutLeContenu}
@@ -673,187 +726,95 @@ ${toutLeContenu}
 
       {/* --- SECTION CALCULATEURS FULL-WIDTH --- */}
       {chatState.currentView === 'calculators' && (
-      <section className="relative max-w-full mx-auto bg-gradient-to-br from-slate-900/80 via-blue-950/80 to-slate-900/80 backdrop-blur-md border-y border-blue-500/30 shadow-2xl z-20">
-        <div className="px-4 sm:px-6 lg:px-8 py-12">
-          {/* Bouton Retour */}
-          <button
-            onClick={() => setChatState({ ...chatState, currentView: 'menu' })}
-            className="mb-6 flex items-center gap-2 bg-slate-700/50 hover:bg-slate-700/70 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-200 font-light"
-          >
-            <ArrowLeft className="w-4 h-4" />
-            <span>Retour au menu</span>
-          </button>
-
-          <div className="w-full bg-gradient-to-br from-slate-800/95 via-blue-900/95 to-slate-800/95 backdrop-blur-md border border-blue-500/30 rounded-2xl shadow-2xl overflow-hidden">
-            {/* Header avec onglets */}
-            <div className="bg-gradient-to-r from-slate-800/95 to-blue-900/95 backdrop-blur-md border-b border-blue-500/30 p-0 z-10">
-              <div className="flex gap-2 p-4">
-                <button
-                  onClick={() => setActiveCalculator('primes')}
-                  className={`flex-1 px-4 py-3 rounded-lg text-base font-light transition-all ${
-                    activeCalculator === 'primes'
-                      ? 'bg-blue-600/70 text-white border border-blue-400/50'
-                      : 'bg-slate-700/50 text-slate-300 border border-slate-600/30 hover:bg-slate-700/70'
-                  }`}
-                >
-                  📈 Primes IFSE
-                </button>
-                <button
-                  onClick={() => setActiveCalculator('cia')}
-                  className={`flex-1 px-4 py-3 rounded-lg text-base font-light transition-all ${
-                    activeCalculator === 'cia'
-                      ? 'bg-orange-600/70 text-white border border-orange-400/50'
-                      : 'bg-slate-700/50 text-slate-300 border border-slate-600/30 hover:bg-slate-700/70'
-                  }`}
-                >
-                  📊 CIA
-                </button>
-              </div>
-            </div>
-
-            {/* Contenu des calculateurs */}
-            <div className="p-8 space-y-4">
-              {/* Calculateur PRIMES */}
-              {activeCalculator === 'primes' && (
-                <div className="space-y-4">
-                  <div className="flex items-center gap-2 mb-4">
-                    <Calculator className="w-6 h-6 text-blue-400" />
-                    <h3 className="text-xl font-light text-white tracking-tight">Calcul des Primes</h3>
-                  </div>
-                        
-                  {/* Sélection de la catégorie */}
-                  <div>
-                    <label className="block text-base font-light text-slate-300 mb-2">Catégorie</label>
-                    <select 
-                      value={selectedCategory}
-                      onChange={(e) => handleCategoryChange(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white text-base focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 outline-none transition-all cursor-pointer"
-                    >
-                      <option value="">Sélectionner une catégorie</option>
-                      <option value="A">Catégorie A</option>
-                      <option value="B">Catégorie B</option>
-                      <option value="C">Catégorie C</option>
-                    </select>
-                  </div>
-
-                  {/* Sélection de la fonction (IFSE 1) */}
-                  <div>
-                    <label className="block text-base font-light text-slate-300 mb-2">Fonction (IFSE 1)</label>
-                    <select 
-                      value={selectedFunction}
-                      onChange={(e) => handleFunctionChange(e.target.value)}
-                      disabled={!selectedCategory}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white text-base focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 outline-none transition-all cursor-pointer disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      <option value="">Sélectionner une fonction</option>
-                      {selectedCategory && ifse1Data.filter(item => item.category === selectedCategory).map((item) => (
-                        <option key={item.functionCode} value={item.function}>
-                          {item.function}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Résultat IFSE 1 */}
-                  {calculatedPrime.annual > 0 && (
-                    <div className="mt-4 pt-4 border-t border-blue-500/20">
-                      <p className="text-sm font-light text-slate-400 mb-1">IFSE 1 - Prime de fonction</p>
-                      <p className="text-4xl font-light text-blue-300">{calculatedPrime.annual.toLocaleString('fr-FR')} €/an</p>
-                      <p className="text-sm text-slate-400">Soit {calculatedPrime.monthly.toLocaleString('fr-FR')} €/mois</p>
-                    </div>
-                  )}
-
-                  {/* Sélection de la direction (IFSE 2) */}
-                  <div className="mt-4 pt-4 border-t border-blue-500/20">
-                    <label className="block text-base font-light text-slate-300 mb-2">Direction (IFSE 2)</label>
-                    <select 
-                      value={selectedDirection}
-                      onChange={(e) => handleDirectionChange(e.target.value)}
-                      className="w-full px-3 py-2 bg-slate-700/50 border border-blue-500/30 rounded-lg text-white text-sm focus:border-blue-400 focus:ring-2 focus:ring-blue-400/50 outline-none transition-all cursor-pointer"
-                    >
-                      <option value="">Sélectionner une direction</option>
-                      {getAllDirections().map((dir) => (
-                        <option key={dir} value={dir}>
-                          {getDirectionFullName(dir)}
-                        </option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Affichage des primes IFSE 2 */}
-                  {selectedDirection && (
-                    <div className="mt-4 pt-4 border-t border-blue-500/20">
-                      <p className="text-sm font-light text-slate-400 mb-3">IFSE 2 - Primes complémentaires (cocher pour inclure)</p>
-                      <div className="space-y-2 max-h-48 overflow-y-auto">
-                        {getIFSE2ByDirection(selectedDirection).map((prime, idx) => (
-                          <div key={idx} className="bg-slate-700/30 rounded-lg p-2 border border-blue-500/20 cursor-pointer hover:bg-slate-700/50 transition" onClick={() => handleToggleIFSE2(idx)}>
-                            {/* Checkbox et info principales */}
-                            <div className="flex items-start gap-2">
-                              <input
-                                type="checkbox"
-                                checked={selectedIFSE2.has(idx)}
-                                onChange={() => handleToggleIFSE2(idx)}
-                                className="mt-0.5 cursor-pointer accent-green-400"
-                              />
-                              <div className="flex-1">
-                                <p className="text-sm font-light text-slate-300">{prime.motif}</p>
-                                <p className="text-green-400 font-light text-base">{prime.amount.toLocaleString('fr-FR')} €/mois</p>
-                                {prime.service && prime.service !== 'Tous services' && (
-                                  <p className="text-xs text-slate-400 mt-1">
-                                    <span className="font-light">Service:</span> {prime.service}
-                                  </p>
-                                )}
-                                {prime.jobs && prime.jobs.length > 0 && (
-                                  <div className="mt-1">
-                                    <p className="text-xs text-slate-400 font-light">Métier(s):</p>
-                                    <ul className="text-xs text-slate-300 ml-2 mt-0.5 space-y-0.5">
-                                      {prime.jobs.map((job, jIdx) => (
-                                        <li key={jIdx} className="truncate">
-                                          • {job}
-                                        </li>
-                                      ))}
-                                    </ul>
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  )}
-
-                  {/* TOTAL MENSUEL */}
-                  {(calculatedPrime.monthly > 0 || selectedIFSE2.size > 0) && (
-                    <div className="mt-4 pt-4 border-t-2 border-green-500/50 bg-gradient-to-r from-green-500/10 to-cyan-500/10 rounded-lg p-3">
-                      <p className="text-sm font-light text-slate-400 mb-2">Montant total mensuel</p>
-                      <p className="text-4xl font-light text-green-400">{calculateTotalMonthly().toLocaleString('fr-FR')} €</p>
-                      <div className="text-sm text-slate-300 mt-2 space-y-0.5">
-                        <p>IFSE 1: {calculatedPrime.monthly.toLocaleString('fr-FR')} €</p>
-                        <p>IFSE 2: {Array.from(selectedIFSE2).reduce((sum, idx) => {
-                          const ifse2List = getIFSE2ByDirection(selectedDirection)
-                          return sum + (ifse2List[idx]?.amount || 0)
-                        }, 0).toLocaleString('fr-FR')} €</p>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* Info */}
-                  <div className="mt-4 p-3 bg-blue-500/10 rounded-lg border border-blue-500/20">
-                    <p className="text-sm text-slate-300 font-light">
-                      ℹ️ IFSE 1 : Prime de fonction • IFSE 2 : Sélectionnez les primes applicables
-                    </p>
-                  </div>
-                </div>
-              )}
-
-              {/* Calculateur CIA */}
-              {activeCalculator === 'cia' && (
-                <CalculateurCIA onClose={() => setActiveCalculator('primes')} />
-              )}
+      <section className="relative w-full min-h-screen bg-gradient-to-br from-slate-900 via-blue-950 to-slate-900 z-20">
+        {/* Header */}
+        <div className="sticky top-0 bg-gradient-to-r from-slate-800/95 to-blue-900/95 backdrop-blur-md border-b border-blue-500/30 z-30">
+          <div className="max-w-6xl mx-auto px-4 py-4">
+            <div className="flex items-center justify-between">
+              <button
+                onClick={() => {
+                  if (activeCalculator) {
+                    setActiveCalculator(null)
+                  } else {
+                    setChatState({ ...chatState, currentView: 'menu' })
+                  }
+                }}
+                className="flex items-center gap-2 bg-slate-700/50 hover:bg-slate-700/70 text-slate-300 hover:text-white px-4 py-2 rounded-lg transition-all duration-200 font-light"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                <span>{activeCalculator ? 'Retour aux calculateurs' : 'Retour au menu'}</span>
+              </button>
+              <h2 className="text-xl font-light text-white">Calculateurs CFDT</h2>
             </div>
           </div>
         </div>
+
+        {/* Page d'accueil avec les 3 icônes */}
+        {!activeCalculator && (
+          <div className="max-w-6xl mx-auto px-4 py-12">
+            <div className="text-center mb-12">
+              <h3 className="text-3xl font-light text-white mb-4">Choisissez un calculateur</h3>
+              <p className="text-slate-400 font-light">Cliquez sur une icône pour accéder au calculateur</p>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {/* Carte Primes IFSE */}
+              <button
+                onClick={() => setActiveCalculator('primes')}
+                className="group relative bg-gradient-to-br from-slate-800/80 to-cyan-900/50 backdrop-blur-md border border-cyan-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-cyan-500/20 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/10 via-transparent to-blue-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                <div className="relative z-10 flex flex-col items-center gap-6">
+                  <div className="p-6 bg-gradient-to-br from-cyan-500/80 to-blue-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform">
+                    <TrendingUp className="w-16 h-16 text-white" />
+                  </div>
+                  <h4 className="text-2xl font-light text-white group-hover:text-cyan-200 transition-colors">Primes IFSE</h4>
+                  <p className="text-center text-slate-400 font-light text-sm">Calculez vos primes IFSE 1 et IFSE 2 selon votre grade et direction</p>
+                </div>
+              </button>
+
+              {/* Carte CIA */}
+              <button
+                onClick={() => setActiveCalculator('cia')}
+                className="group relative bg-gradient-to-br from-slate-800/80 to-orange-900/50 backdrop-blur-md border border-orange-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-orange-500/20 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-amber-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                <div className="relative z-10 flex flex-col items-center gap-6">
+                  <div className="p-6 bg-gradient-to-br from-orange-500/80 to-amber-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform">
+                    <Calculator className="w-16 h-16 text-white" />
+                  </div>
+                  <h4 className="text-2xl font-light text-white group-hover:text-orange-200 transition-colors">CIA</h4>
+                  <p className="text-center text-slate-400 font-light text-sm">Complément Indemnitaire Annuel - Simulez votre prime CIA</p>
+                </div>
+              </button>
+
+              {/* Carte 13ème Mois */}
+              <button
+                onClick={() => setActiveCalculator('13eme')}
+                className="group relative bg-gradient-to-br from-slate-800/80 to-green-900/50 backdrop-blur-md border border-green-500/30 rounded-2xl p-8 shadow-xl hover:shadow-2xl hover:shadow-green-500/20 transition-all duration-300 hover:scale-105 hover:-translate-y-2"
+              >
+                <div className="absolute inset-0 bg-gradient-to-br from-green-500/10 via-transparent to-emerald-500/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-2xl"></div>
+                <div className="relative z-10 flex flex-col items-center gap-6">
+                  <div className="p-6 bg-gradient-to-br from-green-500/80 to-emerald-500/80 rounded-2xl shadow-2xl group-hover:scale-110 transition-transform">
+                    <DollarSign className="w-16 h-16 text-white" />
+                  </div>
+                  <h4 className="text-2xl font-light text-white group-hover:text-green-200 transition-colors">13ème Mois</h4>
+                  <p className="text-center text-slate-400 font-light text-sm">Calculez votre prime de 13ème mois selon votre situation</p>
+                </div>
+              </button>
+            </div>
+          </div>
+        )}
+
+        {/* Contenu du calculateur sélectionné */}
+        {activeCalculator === 'primes' && (
+          <CalculateurPrimes onClose={() => setActiveCalculator(null)} />
+        )}
+        {activeCalculator === 'cia' && (
+          <CalculateurCIA onClose={() => setActiveCalculator(null)} />
+        )}
+        {activeCalculator === '13eme' && (
+          <Calculateur13eme onClose={() => setActiveCalculator(null)} />
+        )}
       </section>
       )}
 
@@ -944,35 +905,7 @@ ${toutLeContenu}
       </main>
 
       {/* --- BANDEAU RSS DÉFILANT --- */}
-      <section className="relative bg-gradient-to-r from-blue-600/60 via-indigo-600/60 to-blue-600/60 backdrop-blur-md text-white overflow-hidden w-full shadow-lg border-b border-blue-500/30 z-50 -mt-0">
-        <div className="relative h-16 flex items-center overflow-hidden">
-          <div className="absolute left-0 top-0 h-full w-40 flex items-center justify-center bg-gradient-to-r from-indigo-700 to-blue-700 backdrop-blur z-20 shadow-lg">
-            <div className="flex items-center gap-2">
-              <Rss className="w-4 h-4 text-cyan-300 animate-pulse" />
-              <span className="text-base font-light tracking-wide text-white">ACTU:</span>
-            </div>
-          </div>
-          <div className="animate-marquee-rss whitespace-nowrap flex items-center pl-44">
-            {rssItems.length > 0 ? (
-              [...rssItems, ...rssItems, ...rssItems].map((item, index) => (
-                <a
-                  key={`${index}-${item.title}`}
-                  href={item.link}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-lg font-light mx-6 hover:text-cyan-300 transition-all duration-200 cursor-pointer hover:drop-shadow-lg text-white"
-                >
-                  • {item.title}
-                </a>
-              ))
-            ) : (
-              <span className="text-base mx-8 font-light text-slate-100">
-                {rssLoading ? "Chargement des articles..." : "Aucun article disponible"}
-              </span>
-            )}
-          </div>
-        </div>
-      </section>
+      <RssBandeau rssItems={rssItems} rssLoading={rssLoading} />
 
       <footer 
         className="relative text-slate-400 text-center py-4 mt-0 z-10 border-t border-purple-500/20"

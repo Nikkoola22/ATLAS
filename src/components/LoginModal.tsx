@@ -1,12 +1,12 @@
 import React, { useState } from "react";
-import { X } from "lucide-react";
 
-interface AdminLoginProps {
+interface LoginModalProps {
+  isOpen: boolean;
   onClose: () => void;
-  onSuccess: () => void;
+  onLogin: (username: string, password: string) => boolean;
 }
 
-const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
+const LoginModal: React.FC<LoginModalProps> = ({ isOpen, onClose, onLogin }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
@@ -17,12 +17,17 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
     setIsLoading(true);
     setError("");
 
-    // Simuler une vérification
+    // Simuler une vérification (dans un vrai projet, ceci serait fait côté serveur)
     await new Promise(resolve => setTimeout(resolve, 500));
     
-    // Identifiants admin (à remplacer par une vraie authentification)
-    if (username === "admin" && password === "cfdt2024") {
-      onSuccess();
+    const isValid = onLogin(username, password);
+    
+    if (isValid) {
+      // Ouvrir la page d'administration
+      window.open('/admin.html', '_blank');
+      onClose();
+      setUsername("");
+      setPassword("");
     } else {
       setError("Nom d'utilisateur ou mot de passe incorrect");
     }
@@ -37,20 +42,16 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
     onClose();
   };
 
+  if (!isOpen) return null;
+
   return (
-    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4 overflow-hidden">
-        <div className="bg-gradient-to-r from-purple-600 to-pink-600 text-white p-6 relative">
-          <button
-            onClick={handleClose}
-            className="absolute top-4 right-4 p-1 hover:bg-white/20 rounded-full transition-colors"
-          >
-            <X className="w-5 h-5" />
-          </button>
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg shadow-xl max-w-md w-full mx-4">
+        <div className="bg-gradient-to-r from-blue-600 to-blue-700 text-white p-6 rounded-t-lg">
           <h2 className="text-xl font-bold flex items-center gap-2">
             🔐 Connexion Administration
           </h2>
-          <p className="text-purple-100 text-sm mt-1">
+          <p className="text-blue-100 text-sm mt-1">
             Accès réservé aux administrateurs CFDT
           </p>
         </div>
@@ -65,7 +66,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
                 type="text"
                 value={username}
                 onChange={(e) => setUsername(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Entrez votre nom d'utilisateur"
                 required
                 disabled={isLoading}
@@ -80,7 +81,7 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500 focus:border-transparent transition-all"
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
                 placeholder="Entrez votre mot de passe"
                 required
                 disabled={isLoading}
@@ -88,8 +89,8 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
             </div>
             
             {error && (
-              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm flex items-center gap-2">
-                <span>❌</span> {error}
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {error}
               </div>
             )}
           </div>
@@ -98,14 +99,14 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
             <button
               type="button"
               onClick={handleClose}
-              className="flex-1 px-4 py-3 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors font-medium"
+              className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-md transition-colors"
               disabled={isLoading}
             >
               Annuler
             </button>
             <button
               type="submit"
-              className="flex-1 px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white rounded-lg transition-all font-medium disabled:opacity-50 disabled:cursor-not-allowed shadow-lg hover:shadow-xl"
+              className="flex-1 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
               disabled={isLoading}
             >
               {isLoading ? "Connexion..." : "Se connecter"}
@@ -117,4 +118,4 @@ const AdminLogin: React.FC<AdminLoginProps> = ({ onClose, onSuccess }) => {
   );
 };
 
-export default AdminLogin;
+export default LoginModal;
