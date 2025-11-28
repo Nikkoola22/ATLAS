@@ -140,7 +140,7 @@ export const ifse1Data: IFSE1Data[] = [
 export const ifse2Data: IFSE2Data[] = [
   // Indemnités horaires décalés catégorie 1
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Agent d\'exploitation des équipements sportifs',
@@ -150,7 +150,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'SGES'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Agent d\'accueil',
@@ -163,42 +163,42 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'CN'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Technicien catégorie C'],
     direction: 'DPO',
     service: 'DIRECTION'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Gardien d\'immeuble'],
     direction: 'DH',
     service: 'Compta & gestion du patrimoine'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['ASVP', 'Chef d\'équipe'],
     direction: 'DRU',
     service: 'ASVP'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Magasinier chauffeur livreur'],
     direction: 'DAJ',
     service: 'Commande publique'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Agent technique polyvalent'],
     direction: 'DAJ',
     service: 'Cimetières'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Mécanicien',
@@ -209,7 +209,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Garage'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Agent polyvalent (peinture, serrurerie, électricité...)',
@@ -221,14 +221,14 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Ateliers municipaux'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Agent polyvalent serrurier', 'Chef d\'équipe'],
     direction: 'DPB',
     service: 'Gestion du CACC'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Jardinier',
@@ -241,7 +241,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'EV'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Agent technique spécialisé',
@@ -256,42 +256,42 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'GP'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Animateur socio-culturel'],
     direction: 'DCCS',
     service: 'Antenne des Agnettes'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Agent d\'accueil', 'Responsable technique', 'Agent technique polyvalent'],
     direction: 'DCCS',
     service: 'Aimé Césaire'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Agent d\'accueil', 'Animateur socio-culturel'],
     direction: 'DCCS',
     service: 'Espace Grésillons'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Placier régisseur', 'Chef d\'équipe placier régisseur'],
     direction: 'DDU',
     service: 'Economique'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Gestionnaire courrier'],
     direction: 'DMRU',
     service: 'Services intérieurs'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: [
       'Agent auprès d\'enfants',
@@ -303,31 +303,31 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Toutes crèches'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Agent d\'entretien', 'Agent comptable', 'Magasinier'],
     direction: 'DMSP',
     service: 'Compta marchés publics'
   },
   {
-    motif: 'Indemnités horaires décalés cat 1',
+    motif: 'Indemnités horaires décalées cat 1',
     amount: 20,
     jobs: ['Assistante de direction'],
     direction: 'DMSP',
     service: 'Direction administrative'
   },
 
-  // Indemnités responsabilités sports et activités nautiques
+  // Indemnités responsabilités - Primes activités nautiques
   {
-    motif: 'Indemnités responsabilités sports',
+    motif: 'Indemnités responsabilités - Primes activités nautiques',
     amount: 168.71,
     jobs: ['Éducateur sportif', 'Responsable de secteur'],
     direction: 'DMS',
     service: 'SGES'
   },
   {
-    motif: 'Prime activités nautiques',
-    amount: 315.9,
+    motif: 'Indemnités responsabilités - Primes activités nautiques',
+    amount: 315.90,
     jobs: ['Maître nageur sauveteur', 'Chef de bassin', 'Adjoint au responsable'],
     direction: 'DMS',
     service: 'CN'
@@ -651,7 +651,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'GCR'
   },
   {
-    motif: 'Prime technicité assistant DGA',
+    motif: 'Prime technicité DGA',
     amount: 150,
     jobs: ['Responsable de gestion budgétaire', 'Assistant DGA'],
     direction: 'DG',
@@ -874,7 +874,7 @@ export const ifse2Data: IFSE2Data[] = [
 
   // Primes culture / jeunesse
   {
-    motif: 'Indemnités sujétions soir et weekend',
+    motif: 'Indemnités sujétions soir et we',
     amount: 45.49,
     jobs: ['Responsable de service'],
     direction: 'DCJ',
@@ -888,7 +888,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Jeunesse'
   },
   {
-    motif: 'Indemnités sujétions soir et weekend',
+    motif: 'Indemnités sujétions soir et we',
     amount: 41.69,
     jobs: ['Responsable de service'],
     direction: 'DCJ',
@@ -932,7 +932,7 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Tous services'
   },
   {
-    motif: 'Prime Maître apprentissage',
+    motif: 'Prime Maître ap-prentissage',
     amount: 98.46,
     jobs: ['Maître d\'apprentissage'],
     direction: 'Toutes dir°',
@@ -972,6 +972,50 @@ export const ifse2Data: IFSE2Data[] = [
     jobs: ['Formateur interne'],
     direction: 'Toutes dir°',
     service: 'Tous services'
+  },
+
+  // Primes ajoutées pour cohérence avec ifse2_primes.json
+  {
+    motif: 'Indemnité chaus-sures',
+    amount: 15.24,
+    jobs: ['Agents concernés'],
+    direction: 'Toutes dir°',
+    service: 'Tous services'
+  },
+  {
+    motif: 'Sujétions spéci-fiques aux soins',
+    amount: 118,
+    jobs: ['Personnel soignant'],
+    direction: 'DMSP',
+    service: 'CMS'
+  },
+  {
+    motif: 'Primes sujétions soir',
+    amount: 60.27,
+    jobs: ['Agents travaillant en soirée'],
+    direction: 'Toutes dir°',
+    service: 'Tous services'
+  },
+  {
+    motif: 'Prime ODEC',
+    amount: 350,
+    jobs: ['Agents ODEC'],
+    direction: 'Toutes dir°',
+    service: 'Tous services'
+  },
+  {
+    motif: 'Prime grand âge',
+    amount: 340,
+    jobs: ['Personnel grand âge'],
+    direction: 'DSA',
+    service: 'Coordination gérontologique'
+  },
+  {
+    motif: 'PSR Radiologie',
+    amount: 465.63,
+    jobs: ['Manipulateur radiologie', 'Technicien radiologie'],
+    direction: 'DMSP',
+    service: 'Radiologie'
   }
 ];
 
