@@ -1,6 +1,6 @@
-import type { VercelRequest, VercelResponse } from '@vercel/node';
+// Fichier : /api/perplexity.js (Vercel Serverless Function)
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req, res) {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Méthode non autorisée' });
   }
@@ -15,13 +15,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const response = await fetch('https://api.perplexity.ai/chat/completions', {
       method: 'POST',
       headers: {
-        'Authorization': `Bearer ${process.env.API_KEY}`, // clé mise dans Vercel → Project Settings > Environment Variables
+        'Authorization': `Bearer ${process.env.API_KEY}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({
-        model: 'sonar-pro',
-        messages,
-      }),
+      body: JSON.stringify({ model: 'sonar-pro', messages }),
     });
 
     if (!response.ok) {
@@ -31,8 +28,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     const data = await response.json();
     return res.status(200).json(data);
-
-  } catch (err: any) {
+  } catch (err) {
     return res.status(500).json({ error: err.message });
   }
 }
