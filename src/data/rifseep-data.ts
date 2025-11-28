@@ -570,9 +570,37 @@ export const ifse2Data: IFSE2Data[] = [
   {
     motif: 'Prime accueil 1',
     amount: 50,
-    jobs: ['Chargé d\'information'],
+    jobs: ['Chargé d\'information', 'Assistante'],
     direction: 'DCJ',
     service: 'Spectacles'
+  },
+  {
+    motif: 'Prime accueil 1',
+    amount: 50,
+    jobs: ['Agent chargé des mandatements'],
+    direction: 'DESS',
+    service: 'SSE'
+  },
+  {
+    motif: 'Prime accueil 1',
+    amount: 50,
+    jobs: ['Assistante'],
+    direction: 'DME',
+    service: 'PRE'
+  },
+  {
+    motif: 'Prime accueil 1',
+    amount: 50,
+    jobs: ['Agent d\'accueil', 'Secrétaire'],
+    direction: 'DME',
+    service: 'Séjours éducatifs'
+  },
+  {
+    motif: 'Prime accueil 1',
+    amount: 50,
+    jobs: ['Assistante administrative (V. Leveil)'],
+    direction: 'DME',
+    service: 'Enfance'
   },
 
   // Prime accueil 2
@@ -622,6 +650,62 @@ export const ifse2Data: IFSE2Data[] = [
     jobs: ['Animateur santé'],
     direction: 'DMSP',
     service: 'Espace santé jeunes'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Secrétaire médicale'],
+    direction: 'DMSP',
+    service: 'PMI Timbaud'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Assistante dentaire'],
+    direction: 'DMSP',
+    service: 'Dentaire'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Agent chargé des repas et télétransmission', 'Agent administratif'],
+    direction: 'DSA',
+    service: 'ASA'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Conseiller en insertion', 'Assistante', 'Agent d\'accueil'],
+    direction: 'DSA',
+    service: 'Espace insertion'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Agent d\'accueil', 'Agent administratif'],
+    direction: 'DSA',
+    service: 'Prestations de solidarité'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Assistant des bibliothèques'],
+    direction: 'DCJ',
+    service: 'Médiathèques'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Agent d\'accueil'],
+    direction: 'DME',
+    service: 'Séjours éducatifs'
+  },
+  {
+    motif: 'Prime accueil 2',
+    amount: 50,
+    jobs: ['Chargée de recrutement'],
+    direction: 'DRH',
+    service: 'DCRH'
   },
 
   // Primes technicité RH / GCR / assistant DGA
