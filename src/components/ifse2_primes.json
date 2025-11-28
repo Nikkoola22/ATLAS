@@ -1338,7 +1338,7 @@
   },
   {
     "Motif": "Prime forfaitaire soins",
-    "Montant": "15,24 €",
+    "Montant": "2,73 €",
     "Metiers_concernes": "Agent d'accueil",
     "Direction": "DMSP",
     "Service": "SIADPA"
@@ -1358,7 +1358,7 @@
     "Service": "SIADPA"
   },
   {
-    "Motif": "Indemnité chaus-sures",
+    "Motif": "Indemnité chaussures",
     "Montant": "2,73 €",
     "Metiers_concernes": "Aide-soignante",
     "Direction": "DMSP",

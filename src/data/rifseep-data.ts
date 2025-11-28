@@ -812,9 +812,16 @@ export const ifse2Data: IFSE2Data[] = [
     service: 'Exploitation'
   },
   {
-    motif: 'Prime informatique ingénierie (B)',
+    motif: 'Prime informatique ingénierie (B) - Grade 1',
+    amount: 109.12,
+    jobs: ['Technicien informatique'],
+    direction: 'DSI',
+    service: 'Assistance'
+  },
+  {
+    motif: 'Prime informatique ingénierie (B) - Grade 2',
     amount: 131.95,
-    jobs: ['Technicien informatique (109,12 € ou 131,95 € selon grade)'],
+    jobs: ['Technicien informatique (grade supérieur)'],
     direction: 'DSI',
     service: 'Assistance'
   },
@@ -962,6 +969,13 @@ export const ifse2Data: IFSE2Data[] = [
   {
     motif: 'Prime Gestionnaire déconcentré',
     amount: 90,
+    jobs: ['Responsable de service', 'Agent comptable'],
+    direction: 'DMSP',
+    service: 'Comptabilité Marchés publics'
+  },
+  {
+    motif: 'Prime Gestionnaire déconcentré',
+    amount: 90,
     jobs: ['Responsable gestion financière'],
     direction: 'DRH',
     service: 'Gestion financière'
@@ -976,18 +990,25 @@ export const ifse2Data: IFSE2Data[] = [
 
   // Primes ajoutées pour cohérence avec ifse2_primes.json
   {
-    motif: 'Indemnité chaus-sures',
-    amount: 15.24,
-    jobs: ['Agents concernés'],
-    direction: 'Toutes dir°',
-    service: 'Tous services'
+    motif: 'Indemnité chaussures',
+    amount: 2.73,
+    jobs: ['Aide-soignante'],
+    direction: 'DMSP',
+    service: 'Infirmerie'
   },
   {
-    motif: 'Sujétions spéci-fiques aux soins',
-    amount: 118,
-    jobs: ['Personnel soignant'],
+    motif: 'Sujétions spécifiques aux soins',
+    amount: 182.75,
+    jobs: ['Aide-soignante'],
     direction: 'DMSP',
-    service: 'CMS'
+    service: 'SIADPA'
+  },
+  {
+    motif: 'Sujétions spécifiques aux soins (majoration)',
+    amount: 197.51,
+    jobs: ['Aide-soignante (selon ancienneté)'],
+    direction: 'DMSP',
+    service: 'SIADPA'
   },
   {
     motif: 'Primes sujétions soir',
